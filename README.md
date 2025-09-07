@@ -89,5 +89,4 @@ Validate --explain Output: Check if the extended output works as expected across
 Automate Testing: Use cron jobs or CI pipelines to run and verify health checks periodically.
 
 
-Make sure to save this content in a file named `README.md` in your repository. The markdown formatting should display correctly on GitHub and other markdown viewers. If you still encounter issues, please let me know! 😊
 
