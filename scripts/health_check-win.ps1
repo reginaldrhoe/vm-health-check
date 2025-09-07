@@ -1,12 +1,18 @@
+# Function to get current date and time in UTC
+function Get-UTCDateTime {
+    return (Get-Date).ToUniversalTime().ToString("yyyy-MM-ddTHH:mm:ssZ")
+}
+
 # Function to check CPU usage
 function Check-CPU {
     $cpuUsage = Get-WmiObject win32_processor | Measure-Object -Property LoadPercentage -Average | Select-Object -ExpandProperty Average
+    $dateTime = Get-UTCDateTime
     if ($cpuUsage -gt 85) {
         Write-Host "[X] High CPU usage: $cpuUsage%" -ForegroundColor Red
-        "[X] High CPU usage: $cpuUsage%" | Out-File -FilePath "C:\Users\rhoe\Documents\CSTU\CSE604\Github\vm-health-check\docs\health_check.log" -Append
+        "$dateTime [X] High CPU usage: $cpuUsage%" | Out-File -FilePath "C:\Users\rhoe\Documents\CSTU\CSE604\Github\vm-health-check\docs\health_check.log" -Append
     } else {
         Write-Host "[OK] CPU usage: $cpuUsage%" -ForegroundColor Green
-        "[OK] CPU usage: $cpuUsage%" | Out-File -FilePath "C:\Users\rhoe\Documents\CSTU\CSE604\Github\vm-health-check\docs\health_check.log" -Append
+        "$dateTime [OK] CPU usage: $cpuUsage%" | Out-File -FilePath "C:\Users\rhoe\Documents\CSTU\CSE604\Github\vm-health-check\docs\health_check.log" -Append
     }
 }
 
@@ -14,12 +20,13 @@ function Check-CPU {
 function Check-Memory {
     $mem = Get-WmiObject win32_operatingsystem
     $memUsage = [math]::round((($mem.TotalVisibleMemorySize - $mem.FreePhysicalMemory) / $mem.TotalVisibleMemorySize) * 100, 2)
+    $dateTime = Get-UTCDateTime
     if ($memUsage -gt 90) {
         Write-Host "[X] High memory usage: $memUsage%" -ForegroundColor Red
-        "[X] High memory usage: $memUsage%" | Out-File -FilePath "C:\Users\rhoe\Documents\CSTU\CSE604\Github\vm-health-check\docs\health_check.log" -Append
+        "$dateTime [X] High memory usage: $memUsage%" | Out-File -FilePath "C:\Users\rhoe\Documents\CSTU\CSE604\Github\vm-health-check\docs\health_check.log" -Append
     } else {
         Write-Host "[OK] Memory usage: $memUsage%" -ForegroundColor Green
-        "[OK] Memory usage: $memUsage%" | Out-File -FilePath "C:\Users\rhoe\Documents\CSTU\CSE604\Github\vm-health-check\docs\health_check.log" -Append
+        "$dateTime [OK] Memory usage: $memUsage%" | Out-File -FilePath "C:\Users\rhoe\Documents\CSTU\CSE604\Github\vm-health-check\docs\health_check.log" -Append
     }
 }
 
@@ -29,12 +36,13 @@ function Check-Disk {
     $diskSize = $disk.Size
     $diskFreeSpace = $disk.FreeSpace
     $diskUsagePercent = [math]::round((($diskSize - $diskFreeSpace) / $diskSize) * 100, 2)
+    $dateTime = Get-UTCDateTime
     if ($diskUsagePercent -gt 80) {
         Write-Host "[X] High disk usage: $diskUsagePercent%" -ForegroundColor Red
-        "[X] High disk usage: $diskUsagePercent%" | Out-File -FilePath "C:\Users\rhoe\Documents\CSTU\CSE604\Github\vm-health-check\docs\health_check.log" -Append
+        "$dateTime [X] High disk usage: $diskUsagePercent%" | Out-File -FilePath "C:\Users\rhoe\Documents\CSTU\CSE604\Github\vm-health-check\docs\health_check.log" -Append
     } else {
         Write-Host "[OK] Disk usage: $diskUsagePercent%" -ForegroundColor Green
-        "[OK] Disk usage: $diskUsagePercent%" | Out-File -FilePath "C:\Users\rhoe\Documents\CSTU\CSE604\Github\vm-health-check\docs\health_check.log" -Append
+        "$dateTime [OK] Disk usage: $diskUsagePercent%" | Out-File -FilePath "C:\Users\rhoe\Documents\CSTU\CSE604\Github\vm-health-check\docs\health_check.log" -Append
     }
 }
 
